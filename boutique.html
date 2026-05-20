@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>GreenMarket – Boutiques Locales & Durables</title>
+  <!-- Google Fonts: elegant serif + clean sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* -----------------------------------------------
+       RESET & ROOT (matches the given elegant theme)
+    ------------------------------------------------ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --ivory: #f9f5ef;
+      --cream: #f2ebe0;
+      --cream2: #e8dfd0;
+      --sand: #d4c5ad;
+      --olive: #5c6b3a;
+      --olive-mid: #748249;
+      --olive-lt: #a3b37a;
+      --olive-bg: #edf0e4;
+      --brown: #6b4c2a;
+      --brown-lt: #9a7455;
+      --text: #1e1e18;
+      --text-mid: #4a4a3a;
+      --text-lt: #8a8a74;
+      --white: #ffffff;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Jost', sans-serif;
+      --r-sm: 12px;
+      --r-md: 20px;
+      --r-lg: 32px;
+      --r-xl: 48px;
+      --shadow-sm: 0 2px 12px rgba(60, 50, 20, 0.07);
+      --shadow-md: 0 8px 32px rgba(60, 50, 20, 0.10);
+      --shadow-lg: 0 24px 64px rgba(60, 50, 20, 0.13);
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--ivory);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- NAVBAR (fixed, luxury style) ---------- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 72px;
+      background: rgba(249, 245, 239, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(212, 197, 173, 0.35);
+      transition: box-shadow 0.3s;
+    }
+    .navbar.scrolled {
+      box-shadow: var(--shadow-sm);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+    .logo-leaf {
+      width: 34px;
+      height: 34px;
+      background: var(--olive);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-leaf::after {
+      content: '';
+      width: 14px;
+      height: 14px;
+      background: var(--ivory);
+      border-radius: 50%;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+    .logo-text {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--olive);
+      letter-spacing: 0.02em;
+    }
+    .logo-text span {
+      color: var(--brown);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--olive);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .nav-links a:hover {
+      color: var(--olive);
+    }
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .cart-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--sand);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.2s;
+      color: var(--text-mid);
+    }
+    .cart-btn:hover {
+      background: var(--cream);
+      border-color: var(--olive-lt);
+    }
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 18px;
+      height: 18px;
+      background: var(--olive);
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 600;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .signin-btn {
+      height: 38px;
+      padding: 0 22px;
+      background: var(--olive);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .signin-btn:hover {
+      background: var(--olive-mid);
+      transform: scale(1.02);
+    }
+
+    /* ----- MAIN CONTAINER (Shops Grid) ----- */
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 120px 60px 80px;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-label-line {
+      width: 32px;
+      height: 1px;
+      background: var(--olive-lt);
+    }
+    .section-label-text {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--olive);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .section-heading {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1.15;
+    }
+    .section-heading em {
+      font-style: italic;
+      color: var(--olive);
+    }
+    .section-sub {
+      font-size: 0.92rem;
+      color: var(--text-lt);
+      max-width: 540px;
+      margin: 12px auto 0;
+    }
+
+    /* Shops Grid (cards styled exactly like featured products) */
+    .shops-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 32px;
+      margin-top: 24px;
+    }
+    .shop-card {
+      background: white;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.35s cubic-bezier(.22, .68, 0, 1.2), box-shadow 0.35s;
+      cursor: pointer;
+      border: 1px solid rgba(212, 197, 173, 0.3);
+      display: flex;
+      flex-direction: column;
+    }
+    .shop-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: var(--shadow-lg);
+    }
+    .shop-img {
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 12px;
+    }
+    .badge-eco {
+      background: rgba(92, 107, 58, 0.92);
+      backdrop-filter: blur(4px);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .shop-info {
+      padding: 1.4rem 1.4rem 1.8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .shop-info h3 {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .shop-rating {
+      font-size: 0.8rem;
+      color: #d4af37;
+    }
+    .shop-category {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--olive-mid);
+      margin-bottom: 10px;
+    }
+    .shop-desc {
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+      margin: 8px 0 16px;
+      flex: 1;
+    }
+    .click-hint {
+      margin-top: 16px;
+      font-size: 0.7rem;
+      color: var(--olive);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid var(--cream2);
+      padding-top: 14px;
+    }
+
+    /* MODAL / SIDE PANEL (product list inside a shop) */
+    .shop-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 20, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.2s;
+    }
+    .shop-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .shop-detail-panel {
+      background: #ffffff;
+      width: 90%;
+      max-width: 1000px;
+      max-height: 85vh;
+      border-radius: 40px;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: fadeSlideUp 0.3s ease-out;
+    }
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .detail-header {
+      background: #f1f9ec;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #ddebd4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .detail-header h2 {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      color: #1d4d1a;
+    }
+    .close-detail {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #567845;
+      transition: 0.2s;
+    }
+    .close-detail:hover {
+      color: #c23b22;
+    }
+    .products-list {
+      padding: 1.8rem 2rem;
+    }
+    .products-title {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      font-size: 1.3rem;
+      border-left: 5px solid var(--olive);
+      padding-left: 1rem;
+      font-family: var(--serif);
+    }
+    .product-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background: #fefef7;
+      border-radius: 24px;
+      margin-bottom: 1rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid #e0efd8;
+      transition: all 0.2s;
+    }
+    .product-info {
+      flex: 3;
+    }
+    .product-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      font-family: var(--serif);
+    }
+    .product-desc {
+      font-size: 0.8rem;
+      color: #5d7452;
+      margin-top: 4px;
+    }
+    .product-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .price {
+      font-weight: 800;
+      color: var(--olive);
+      font-size: 1.2rem;
+    }
+    .stock {
+      font-size: 0.7rem;
+      background: #eaf4e5;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .add-to-cart {
+      background: #3f9142;
+      color: white;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 20px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .add-to-cart:hover {
+      background: #27632a;
+      transform: scale(0.97);
+    }
+    .toast-msg {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f3b1c;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+      font-family: var(--sans);
+      box-shadow: var(--shadow-md);
+    }
+    .toast-msg.show {
+      opacity: 1;
+    }
+    footer {
+      background: var(--text);
+      padding: 48px 60px 32px;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      font-size: 0.8rem;
+      margin-top: 40px;
+    }
+    @media (max-width: 1024px) {
+      .main-container {
+        padding: 100px 40px 60px;
+      }
+    }
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0 24px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .main-container {
+        padding: 100px 20px 60px;
+      }
+      .shop-detail-panel {
+        width: 95%;
+      }
+      .product-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .add-to-cart {
+        align-self: flex-end;
+      }
+      .detail-header h2 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="acceuil.html" class="logo">
+    <div class="logo-leaf"></div>
+    <div class="logo-text">Green<span>Market</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="acceuil.html">Accueil</a></li>
+    <li><a href="boutique.html">Boutiques</a></li>
+    <li><a href="catalogue.html">Circuits courts</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="panier.html" class="cart-btn" aria-label="Cart">
+      <i class="fas fa-shopping-basket"></i>
+      <span class="cart-badge" id="cartCounter">0</span>
+    </button>
+    <a href="login.html" class="signin-btn">Se connecter</a>
+  </div>
+</nav>
+
+<main class="main-container">
+  <div class="section-header">
+    <div class="section-label">
+      <div class="section-label-line"></div>
+      <span class="section-label-text">Producteurs locaux & engagés</span>
+    </div>
+    <h1 class="section-heading">Boutiques <em>écoresponsables</em></h1>
+    <p class="section-sub">Découvrez des artisans, maraîchers et producteurs près de chez vous. Cliquez sur une boutique pour voir ses produits frais et durables.</p>
+  </div>
+
+  <div class="shops-grid" id="shopsGrid"></div>
+</main>
+
+<!-- MODAL D'UNE BOUTIQUE -->
+<div id="shopModal" class="shop-overlay">
+  <div class="shop-detail-panel">
+    <div class="detail-header">
+      <h2 id="modalShopName">Ferme des Saveurs</h2>
+      <button class="close-detail" id="closeModalBtn"><i class="fas fa-times-circle"></i></button>
+    </div>
+    <div class="products-list">
+      <div class="products-title">🌱 Produits disponibles · fraîcheur garantie</div>
+      <div id="dynamicProducts"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toastMsg" class="toast-msg">
+  <i class="fas fa-check-circle"></i> <span id="toastText">Ajouté au panier</span>
+</div>
+
+<footer>
+  <p><i class="fas fa-leaf"></i> GreenMarket – Soutenons l’agriculture locale et les circuits courts. Paiement sécurisé & traçabilité.</p>
+  <p style="margin-top: 10px;">&copy; 2026 GreenMarket – Tous droits réservés</p>
+</footer>
+
+<script>
+  // -----------------------------
+  // MOCK BOUTIQUES avec vraies images (Unsplash / Pexels libres)
+  // -----------------------------
+  const shopsData = [
+    {
+      id: 1,
+      name: "🌿 Les Jardins d'Antan",
+      category: "Maraîchers Bio",
+      description: "Légumes de saison, zéro pesticide, récoltés à maturité. Engagement pour la biodiversité.",
+      imageUrl: "https://images.pexels.com/photos/2470853/pexels-photo-2470853.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+      rating: 4.8,
+      products: [
+        { id: 101, name: "Tomates anciennes", description: "Mélange de variétés anciennes, goût intense", price: 3.90, stock: 14, unit: "kg" },
+        { id: 102, name: "Salade verte", description: "Laitue bio croquante", price: 1.80, stock: 32, unit: "pièce" },
+        { id: 103, name: "Courgettes bio", description: "Issues de la permaculture", price: 2.50, stock: 21, unit: "kg" }
+      ]
+    },
+    {
+      id: 2,
+      name: "🍯 Ruchers du Perche",
+      category: "Miels & dérivés",
+      description: "Miel toutes fleurs, propolis, produits de la ruche labellisés Bio Cohérence.",
+      imageUrl: "https://images.pexels.com/photos/1425307/pexels-photo-1425307.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+      rating: 4.9,
+      products: [
+        { id: 201, name: "Miel toutes fleurs", description: "Pot 500g - récolte printanière", price: 12.50, stock: 45, unit: "pot" },
+        { id: 202, name: "Pollen frais", description: "Riche en protéines", price: 8.90, stock: 12, unit: "100g" },
+        { id: 203, name: "Propolis teinture mère", description: "Défenses naturelles", price: 14.90, stock: 8, unit: "30ml" }
+      ]
+    },
+    {
+      id: 3,
+      name: "🥖 Fournil des Collines",
+      category: "Boulangerie artisanale",
+      description: "Farines locales, levain naturel, pains au levain et pâtisseries bio.",
+      imageUrl: "https://images.pexels.com/photos/2635790/pexels-photo-2635790.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+      rating: 4.7,
+      products: [
+        { id: 301, name: "Pain campagne", description: "Farine T80 & graines", price: 4.20, stock: 18, unit: "pièce" },
+        { id: 302, name: "Baguette tradition", description: "Issue de blé ancien", price: 1.90, stock: 25, unit: "pièce" },
+        { id: 303, name: "Tarte aux pommes", description: "Fruits bio & pâte maison", price: 6.50, stock: 7, unit: "part" }
+      ]
+    },
+    {
+      id: 4,
+      name: "🧀 Laiterie du Val Fleuri",
+      category: "Fromages & lait cru",
+      description: "Fromages fermiers, yaourts nature, élevage en plein air.",
+      imageUrl: "https://images.pexels.com/photos/1195787/pexels-photo-1195787.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+      rating: 4.6,
+      products: [
+        { id: 401, name: "Camembert au lait cru", description: "Affinage 3 semaines", price: 5.90, stock: 11, unit: "pièce" },
+        { id: 402, name: "Yaourt nature", description: "Lot de 6, sans sucre ajouté", price: 3.20, stock: 24, unit: "lot" },
+        { id: 403, name: "Brebicou doux", description: "Petit fromage de brebis", price: 4.50, stock: 15, unit: "pièce" }
+      ]
+    },
+    {
+      id: 5,
+      name: "🌶️ Arômes du Soleil",
+      category: "Épicerie fine",
+      description: "Huiles d'olive, épices, légumes secs et pestos maison.",
+      imageUrl: "https://images.pexels.com/photos/5894144/pexels-photo-5894144.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+      rating: 4.9,
+      products: [
+        { id: 501, name: "Huile d'olive vierge extra", description: "Première pression, fruitée", price: 14.50, stock: 22, unit: "bouteille 50cl" },
+        { id: 502, name: "Pesto basilic", description: "Basilic frais, pignons bio", price: 5.90, stock: 9, unit: "pot" }
+      ]
+    }
+  ];
+
+  // Panier simple (local)
+  let cart = [];
+  function updateCartUI() {
+    const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const badge = document.getElementById('cartCounter');
+    if (badge) badge.innerText = totalQty;
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById('toastMsg');
+    const toastSpan = document.getElementById('toastText');
+    toastSpan.innerText = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  function addToCart(product, shopName) {
+    const existing = cart.find(item => item.productId === product.id && item.shopName === shopName);
+    if (existing) {
+      existing.quantity += 1;
+      showToast(`📦 ${product.name} quantité: ${existing.quantity}`);
+    } else {
+      cart.push({
+        productId: product.id,
+        productName: product.name,
+        price: product.price,
+        shopName: shopName,
+        quantity: 1,
+        unit: product.unit
+      });
+      showToast(`✅ ${product.name} ajouté au panier`);
+    }
+    updateCartUI();
+  }
+
+  // Génération des cartes boutiques
+  function renderShops() {
+    const grid = document.getElementById('shopsGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    shopsData.forEach(shop => {
+      const card = document.createElement('div');
+      card.className = 'shop-card';
+      card.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openShopModal(shop.id);
+      });
+      const imgDiv = document.createElement('div');
+      imgDiv.className = 'shop-img';
+      imgDiv.style.backgroundImage = `url('${shop.imageUrl}')`;
+      imgDiv.style.backgroundSize = 'cover';
+      imgDiv.style.backgroundPosition = 'center';
+      const badgeSpan = document.createElement('span');
+      badgeSpan.className = 'badge-eco';
+      badgeSpan.innerHTML = '<i class="fas fa-seedling"></i> Éco-responsable';
+      imgDiv.appendChild(badgeSpan);
+      
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'shop-info';
+      infoDiv.innerHTML = `
+        <h3>${shop.name} <span class="shop-rating"><i class="fas fa-star"></i> ${shop.rating}</span></h3>
+        <div class="shop-category"><i class="fas fa-tag"></i> ${shop.category}</div>
+        <div class="shop-desc">${shop.description}</div>
+        <div class="click-hint"><i class="fas fa-hand-pointer"></i> Cliquez pour voir les produits</div>
+      `;
+      card.appendChild(imgDiv);
+      card.appendChild(infoDiv);
+      grid.appendChild(card);
+    });
+  }
+
+  function openShopModal(shopId) {
+    const shop = shopsData.find(s => s.id === shopId);
+    if (!shop) return;
+    const modal = document.getElementById('shopModal');
+    const modalTitle = document.getElementById('modalShopName');
+    modalTitle.innerHTML = `<i class="fas fa-store"></i> ${shop.name} · ${shop.category}`;
+    const productsContainer = document.getElementById('dynamicProducts');
+    productsContainer.innerHTML = '';
+    if (shop.products.length === 0) {
+      productsContainer.innerHTML = '<div style="padding:2rem; text-align:center;">Aucun produit pour l’instant 🌿</div>';
+    } else {
+      shop.products.forEach(prod => {
+        const prodDiv = document.createElement('div');
+        prodDiv.className = 'product-item';
+        prodDiv.innerHTML = `
+          <div class="product-info">
+            <div class="product-name">${prod.name} <span style="font-size:0.7rem;">(${prod.unit})</span></div>
+            <div class="product-desc">${prod.description}</div>
+            <div class="product-meta">
+              <span class="price">${prod.price.toFixed(2)} €</span>
+              <span class="stock"><i class="fas fa-boxes"></i> stock: ${prod.stock}</span>
+            </div>
+          </div>
+          <button class="add-to-cart" data-pid="${prod.id}" data-shop="${shop.name}">
+            <i class="fas fa-cart-plus"></i> Ajouter
+          </button>
+        `;
+        productsContainer.appendChild(prodDiv);
+      });
+      // Attacher événements
+      const btns = productsContainer.querySelectorAll('.add-to-cart');
+      btns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const pid = parseInt(btn.getAttribute('data-pid'));
+          const shopNameRef = btn.getAttribute('data-shop');
+          const product = shop.products.find(p => p.id === pid);
+          if (product) addToCart(product, shopNameRef);
+        });
+      });
+    }
+    modal.classList.add('active');
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('shopModal');
+    modal.classList.remove('active');
+  }
+
+  // Event listeners
+  document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+  const modalOverlay = document.getElementById('shopModal');
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  // Sticky navbar effet
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  });
+
+  renderShops();
+  updateCartUI();
+
+  // petite animation d'entrée (optionnelle)
+  console.log('GreenMarket — boutiques locales avec vraies images');
+
+  (function(){
+    const _u = localStorage.getItem('greenmarket_user');
+    const signBtn = document.getElementById('signInBtn');
+    const dashBtn = document.getElementById('dashBtn');
+    if(_u){
+      const user = JSON.parse(_u);
+      if(dashBtn){ dashBtn.style.display='inline-flex'; }
+      if(signBtn){ signBtn.style.display='none'; }
+    }
+  })();
+</script>
+</body>
+</html>

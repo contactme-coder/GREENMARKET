@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>GreenMarket – Shopping Cart | Your Local Basket</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --ivory: #f9f5ef;
+      --cream: #f2ebe0;
+      --cream2: #e8dfd0;
+      --sand: #d4c5ad;
+      --olive: #4a5d2e;
+      --olive-mid: #5e7340;
+      --olive-lt: #8fa06c;
+      --olive-bg: #eef2e4;
+      --brown: #6b4c2a;
+      --text: #1e1e18;
+      --text-mid: #4a4a3a;
+      --text-lt: #8a8a74;
+      --white: #ffffff;
+      --success: #2b6e2f;
+      --warning: #d4a373;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Jost', sans-serif;
+      --shadow-sm: 0 2px 12px rgba(60, 50, 20, 0.06);
+      --shadow-md: 0 8px 32px rgba(60, 50, 20, 0.10);
+      --shadow-lg: 0 24px 60px rgba(60, 50, 20, 0.12);
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--ivory);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 72px;
+      height: 80px;
+      background: rgba(249, 245, 239, 0.96);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(212, 197, 173, 0.4);
+      transition: all 0.3s;
+    }
+    .navbar.scrolled {
+      box-shadow: var(--shadow-sm);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .logo-leaf {
+      width: 36px;
+      height: 36px;
+      background: var(--olive);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+    }
+    .logo-text {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--olive);
+      letter-spacing: 0.02em;
+    }
+    .logo-text span {
+      color: var(--brown);
+    }
+    .nav-links {
+      display: flex;
+      gap: 42px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--olive);
+    }
+    .cart-icon {
+      position: relative;
+      font-size: 1.2rem;
+      color: var(--text-mid);
+      cursor: pointer;
+    }
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      background: var(--olive);
+      color: white;
+      font-size: 0.6rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .signin-btn {
+      height: 42px;
+      padding: 0 28px;
+      background: var(--olive);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    /* Cart Container */
+    .cart-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 120px 40px 80px;
+    }
+    .cart-header {
+      margin-bottom: 48px;
+    }
+    .cart-header h1 {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .cart-header p {
+      color: var(--text-lt);
+    }
+
+    .cart-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+    }
+
+    /* Cart Items */
+    .cart-items {
+      background: white;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(212, 197, 173, 0.25);
+    }
+    .cart-item {
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--cream2);
+    }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    .item-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      object-fit: cover;
+      background: var(--olive-bg);
+    }
+    .item-details {
+      flex: 1;
+    }
+    .item-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .item-seller {
+      font-size: 0.7rem;
+      color: var(--olive);
+      margin-bottom: 8px;
+    }
+    .item-price {
+      font-weight: 600;
+      color: var(--olive);
+    }
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 12px;
+    }
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--sand);
+      border-radius: 60px;
+      padding: 6px 16px;
+    }
+    .quantity-selector button {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      color: var(--text-mid);
+      width: 24px;
+    }
+    .remove-item {
+      background: none;
+      border: none;
+      color: var(--danger, #c95a5a);
+      font-size: 0.75rem;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .item-total {
+      text-align: right;
+      min-width: 80px;
+    }
+    .item-total .total-price {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    /* Order Summary */
+    .order-summary {
+      background: white;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(212, 197, 173, 0.25);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    .summary-title {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--cream2);
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+    }
+    .summary-total {
+      border-top: 2px solid var(--cream2);
+      margin-top: 12px;
+      padding-top: 20px;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .promo-code {
+      margin: 20px 0;
+      display: flex;
+      gap: 10px;
+    }
+    .promo-code input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid var(--sand);
+      border-radius: 60px;
+      font-family: var(--sans);
+    }
+    .apply-btn {
+      background: var(--olive-bg);
+      border: none;
+      padding: 0 20px;
+      border-radius: 60px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .checkout-btn {
+      width: 100%;
+      background: var(--olive);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+    .checkout-btn:hover {
+      background: var(--olive-mid);
+    }
+    .payment-icons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+      color: var(--text-lt);
+      font-size: 1.2rem;
+    }
+    .empty-cart {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .empty-cart i {
+      font-size: 4rem;
+      color: var(--sand);
+      margin-bottom: 20px;
+    }
+    .continue-shop {
+      display: inline-block;
+      margin-top: 20px;
+      background: var(--olive);
+      color: white;
+      padding: 12px 32px;
+      border-radius: 60px;
+      text-decoration: none;
+    }
+
+    @media (max-width: 1024px) {
+      .navbar { padding: 0 32px; }
+      .cart-container { padding: 100px 24px 60px; }
+      .cart-grid { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .cart-item { flex-direction: column; align-items: flex-start; }
+      .item-total { text-align: left; margin-top: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="acceuil.html" class="logo">
+    <div class="logo-leaf"></div>
+    <div class="logo-text">Green<span>Market</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="acceuil.html">Home</a></li>
+    <li><a href="catalogue.html">Shop</a></li>
+    <li><a href="acceuil.html#about">Our Story</a></li>
+  </ul>
+  <div style="display: flex; align-items: center; gap: 20px;">
+    <div class="cart-icon">
+      <i class="fas fa-shopping-bag"></i>
+      <span class="cart-badge" id="cartCount">3</span>
+    </div>
+    <a href="login.html" class="signin-btn">Se connecter</a>
+  </div>
+</nav>
+
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>Your Basket <span style="color: var(--olive);">🍃</span></h1>
+    <p>Local, organic, and sustainably sourced — ready for delivery</p>
+  </div>
+
+  <div class="cart-grid" id="cartGrid">
+    <!-- Cart items will be injected here via JS -->
+  </div>
+</div>
+
+<footer style="background: var(--text); padding: 40px 72px 24px; margin-top: 20px;">
+  <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 10px;"><div style="width: 30px; height: 30px; background: var(--olive); border-radius: 50% 50% 50% 0; transform: rotate(-45deg);"></div><span style="color: white; font-family: var(--serif); font-size: 1.1rem;">Green<span style="color: var(--olive-lt);">Market</span></span></div>
+    <div style="color: rgba(255,255,255,0.4); font-size: 0.7rem;">Secure checkout · Free delivery over $50 · Organic guaranteed</div>
+  </div>
+</footer>
+
+<script>
+  // Mock cart data
+  let cartItems = [
+    {
+      id: 1,
+      name: "Heirloom Tomatoes",
+      seller: "Les Jardins d'Antan",
+      price: 6.20,
+      quantity: 2,
+      unit: "kg",
+      image: "tomates anciennes.png",
+      maxStock: 8
+    },
+    {
+      id: 2,
+      name: "Rainbow Carrots",
+      seller: "Les Jardins d'Antan",
+      price: 4.50,
+      quantity: 1,
+      unit: "bunch",
+      image: "carrotarcenciel.png",
+      maxStock: 24
+    },
+    {
+      id: 3,
+      name: "Wild Forest Honey",
+      seller: "Ruchers du Perche",
+      price: 12.00,
+      quantity: 1,
+      unit: "jar",
+      image: "https://images.pexels.com/photos/1638280/pexels-photo-1638280.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop",
+      maxStock: 5
+    }
+  ];
+
+  let appliedPromo = null;
+  let promoDiscount = 0;
+  let promoMessage = "";
+
+  // DOM elements
+  const cartGrid = document.getElementById('cartGrid');
+
+  function updateCartBadge() {
+    const totalQty = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const badge = document.getElementById('cartCount');
+    if (badge) badge.innerText = totalQty;
+  }
+
+  function calculateSubtotal() {
+    return cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  }
+
+  function calculateShipping(subtotal) {
+    return subtotal > 0 ? (subtotal > 50 ? 0 : 5.90) : 0;
+  }
+
+  function calculateTotal(subtotal, shipping) {
+    let total = subtotal + shipping - promoDiscount;
+    return total < 0 ? 0 : total;
+  }
+
+  function renderCart() {
+    if (!cartGrid) return;
+    
+    const subtotal = calculateSubtotal();
+    const shipping = calculateShipping(subtotal);
+    const total = calculateTotal(subtotal, shipping);
+    
+    if (cartItems.length === 0) {
+      cartGrid.innerHTML = `
+        <div class="empty-cart" style="grid-column: 1/-1; background: white; border-radius: 28px; padding: 60px; text-align: center;">
+          <i class="fas fa-shopping-basket"></i>
+          <h3 style="font-family: var(--serif); margin: 16px 0;">Your basket is empty</h3>
+          <p>Discover fresh organic products from local farmers.</p>
+          <a href="catalogue.html" class="continue-shop">Continue Shopping →</a>
+        </div>
+      `;
+      return;
+    }
+    
+    const itemsHtml = `
+      <div class="cart-items">
+        ${cartItems.map(item => `
+          <div class="cart-item" data-id="${item.id}">
+            <img class="item-img" src="${item.image}" alt="${item.name}">
+            <div class="item-details">
+              <div class="item-title">${item.name}</div>
+              <div class="item-seller"><i class="fas fa-store"></i> ${item.seller}</div>
+              <div class="item-price">$${item.price.toFixed(2)} / ${item.unit}</div>
+              <div class="item-actions">
+                <div class="quantity-selector">
+                  <button class="qty-minus" data-id="${item.id}">−</button>
+                  <span class="qty-value">${item.quantity}</span>
+                  <button class="qty-plus" data-id="${item.id}">+</button>
+                </div>
+                <button class="remove-item" data-id="${item.id}"><i class="far fa-trash-alt"></i> Remove</button>
+              </div>
+            </div>
+            <div class="item-total">
+              <div class="total-price">$${(item.price * item.quantity).toFixed(2)}</div>
+              <div style="font-size: 0.7rem; color: var(--text-lt);">total</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="order-summary">
+        <div class="summary-title">Order Summary</div>
+        <div class="summary-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+        <div class="summary-row"><span>Shipping</span><span>${shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span></div>
+        ${promoDiscount > 0 ? `<div class="summary-row" style="color: var(--success);"><span>Discount (${appliedPromo})</span><span>-$${promoDiscount.toFixed(2)}</span></div>` : ''}
+        <div class="summary-row summary-total"><span>Total</span><span>$${total.toFixed(2)}</span></div>
+        <div class="promo-code">
+          <input type="text" id="promoInput" placeholder="Promo code" value="${appliedPromo || ''}">
+          <button id="applyPromoBtn" class="apply-btn">Apply</button>
+        </div>
+        ${promoMessage ? `<div style="font-size: 0.7rem; color: var(--success); margin-top: -12px; margin-bottom: 12px;">${promoMessage}</div>` : ''}
+        <button id="checkoutBtn" class="checkout-btn">Proceed to Checkout →</button>
+        <div class="payment-icons">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-paypal"></i>
+          <i class="fas fa-lock"></i>
+        </div>
+        <p style="font-size: 0.7rem; text-align: center; margin-top: 16px; color: var(--text-lt);">Secure payment · 100% organic guarantee</p>
+      </div>
+    `;
+    
+    cartGrid.innerHTML = itemsHtml;
+    
+    // Attach event listeners
+    document.querySelectorAll('.qty-plus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = parseInt(btn.dataset.id);
+        const item = cartItems.find(i => i.id === id);
+        if (item && item.quantity < item.maxStock) {
+          item.quantity++;
+          updateCartBadge();
+          renderCart();
+        } else if (item) {
+          alert(`Maximum ${item.maxStock} ${item.unit}s available in stock.`);
+        }
+      });
+    });
+    
+    document.querySelectorAll('.qty-minus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = parseInt(btn.dataset.id);
+        const item = cartItems.find(i => i.id === id);
+        if (item && item.quantity > 1) {
+          item.quantity--;
+          updateCartBadge();
+          renderCart();
+        } else if (item && item.quantity === 1) {
+          if (confirm(`Remove "${item.name}" from your cart?`)) {
+            cartItems = cartItems.filter(i => i.id !== id);
+            updateCartBadge();
+            renderCart();
+          }
+        }
+      });
+    });
+    
+    document.querySelectorAll('.remove-item').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = parseInt(btn.dataset.id);
+        const item = cartItems.find(i => i.id === id);
+        if (item && confirm(`Remove "${item.name}" from cart?`)) {
+          cartItems = cartItems.filter(i => i.id !== id);
+          updateCartBadge();
+          renderCart();
+        }
+      });
+    });
+    
+    const applyBtn = document.getElementById('applyPromoBtn');
+    if (applyBtn) {
+      applyBtn.addEventListener('click', applyPromoCode);
+    }
+    
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', () => {
+        const finalTotal = calculateTotal(calculateSubtotal(), calculateShipping(calculateSubtotal()));
+        alert(`✅ Order placed successfully!\n\nTotal: $${finalTotal.toFixed(2)}\nThank you for supporting local farmers. Your order will be delivered within 2-3 days.`);
+        // Optionally clear cart after checkout
+        cartItems = [];
+        updateCartBadge();
+        renderCart();
+      });
+    }
+  }
+  
+  function applyPromoCode() {
+    const input = document.getElementById('promoInput');
+    const code = input.value.trim().toUpperCase();
+    if (code === 'GREEN10') {
+      const subtotal = calculateSubtotal();
+      promoDiscount = subtotal * 0.1;
+      appliedPromo = 'GREEN10';
+      promoMessage = '🎉 10% discount applied!';
+      renderCart();
+    } else if (code === 'FREESHIP') {
+      promoDiscount = 0;
+      appliedPromo = 'FREESHIP';
+      promoMessage = '🚚 Free shipping applied!';
+      renderCart();
+    } else if (code === '') {
+      promoDiscount = 0;
+      appliedPromo = null;
+      promoMessage = '';
+      renderCart();
+    } else {
+      alert('Invalid promo code. Try "GREEN10" for 10% off or "FREESHIP" for free shipping.');
+    }
+  }
+  
+  // Initial render
+  renderCart();
+  updateCartBadge();
+  
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+
+  (function(){
+    const _u = localStorage.getItem('greenmarket_user');
+    const signBtn = document.getElementById('signInBtn');
+    const dashBtn = document.getElementById('dashBtn');
+    if(_u){
+      const user = JSON.parse(_u);
+      if(dashBtn){ dashBtn.style.display='inline-flex'; }
+      if(signBtn){ signBtn.style.display='none'; }
+    }
+  })();
+</script>
+</body>
+</html>

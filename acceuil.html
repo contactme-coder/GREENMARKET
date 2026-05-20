@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenMarket – Nature's Finest, Delivered Fresh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ─────────────────────────────────────────
+   RESET & ROOT
+───────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ivory:     #f9f5ef;
+  --cream:     #f2ebe0;
+  --cream2:    #e8dfd0;
+  --sand:      #d4c5ad;
+  --olive:     #5c6b3a;
+  --olive-mid: #748249;
+  --olive-lt:  #a3b37a;
+  --olive-bg:  #edf0e4;
+  --brown:     #6b4c2a;
+  --brown-lt:  #9a7455;
+  --text:      #1e1e18;
+  --text-mid:  #4a4a3a;
+  --text-lt:   #8a8a74;
+  --white:     #ffffff;
+
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Jost', sans-serif;
+
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 32px;
+  --r-xl: 48px;
+
+  --shadow-sm: 0 2px 12px rgba(60,50,20,0.07);
+  --shadow-md: 0 8px 32px rgba(60,50,20,0.10);
+  --shadow-lg: 0 24px 64px rgba(60,50,20,0.13);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--ivory);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAVBAR */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 60px;
+  height: 72px;
+  background: rgba(249,245,239,0.90);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(212,197,173,0.35);
+  transition: box-shadow 0.3s;
+}
+.navbar.scrolled { box-shadow: var(--shadow-sm); }
+
+.logo {
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none;
+}
+.logo-leaf {
+  width: 34px; height: 34px;
+  background: var(--olive);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.logo-leaf::after {
+  content: '';
+  width: 14px; height: 14px;
+  background: var(--ivory);
+  border-radius: 50%;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+.logo-text {
+  font-family: var(--serif);
+  font-size: 1.4rem; font-weight: 600;
+  color: var(--olive);
+  letter-spacing: 0.02em;
+}
+.logo-text span { color: var(--brown); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem; font-weight: 500;
+  color: var(--text-mid);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0; right: 0; height: 1px;
+  background: var(--olive);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.nav-links a:hover { color: var(--olive); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+
+.cart-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--sand);
+  background: transparent;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+  color: var(--text-mid);
+}
+.cart-btn:hover { background: var(--cream); border-color: var(--olive-lt); }
+.cart-badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 18px; height: 18px;
+  background: var(--olive);
+  color: white;
+  font-size: 0.6rem; font-weight: 600;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.signin-btn {
+  height: 38px; padding: 0 22px;
+  background: var(--olive);
+  color: white;
+  border: none; border-radius: 100px;
+  font-family: var(--sans);
+  font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.signin-btn:hover { background: var(--olive-mid); transform: scale(1.02); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  padding-top: 72px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+  background: var(--ivory);
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.hero-left {
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 80px 70px 80px 80px;
+  position: relative; z-index: 2;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.7s ease both;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--olive);
+}
+.eyebrow-text {
+  font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--olive);
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  font-weight: 300;
+  line-height: 1.06;
+  color: var(--text);
+  margin-bottom: 28px;
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+.hero-title em { font-style: italic; color: var(--olive); }
+.hero-title .line-accent {
+  display: inline-block;
+  position: relative;
+}
+.hero-title .line-accent::after {
+  content: '';
+  position: absolute;
+  bottom: 4px; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--olive-lt), transparent);
+  border-radius: 2px;
+}
+
+.hero-sub {
+  font-size: 1rem; font-weight: 300;
+  color: var(--text-mid); line-height: 1.8;
+  max-width: 420px;
+  margin-bottom: 44px;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.hero-ctas {
+  display: flex; gap: 14px; align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+
+.btn-fill {
+  height: 52px; padding: 0 32px;
+  background: var(--olive);
+  color: white;
+  border: none; border-radius: 100px;
+  font-family: var(--sans); font-size: 0.87rem;
+  font-weight: 500; letter-spacing: 0.06em;
+  cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  box-shadow: 0 4px 20px rgba(92,107,58,0.25);
+}
+.btn-fill:hover {
+  background: var(--olive-mid);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(92,107,58,0.3);
+}
+.btn-fill svg { width: 16px; height: 16px; }
+
+.btn-ghost {
+  height: 52px; padding: 0 28px;
+  background: transparent;
+  color: var(--text-mid);
+  border: 1.5px solid var(--sand);
+  border-radius: 100px;
+  font-family: var(--sans); font-size: 0.87rem;
+  font-weight: 400; letter-spacing: 0.06em;
+  cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+.btn-ghost:hover {
+  border-color: var(--olive-lt);
+  color: var(--olive);
+  background: var(--olive-bg);
+}
+
+.hero-stats {
+  display: flex; gap: 40px;
+  animation: fadeUp 0.7s 0.4s ease both;
+}
+.stat { display: flex; flex-direction: column; gap: 3px; }
+.stat-num {
+  font-family: var(--serif);
+  font-size: 1.9rem; font-weight: 600;
+  color: var(--olive); line-height: 1;
+}
+.stat-label { font-size: 0.72rem; color: var(--text-lt); letter-spacing: 0.1em; text-transform: uppercase; }
+
+.hero-right {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 60px 60px 30px;
+  z-index: 2;
+  animation: fadeIn 1s 0.3s ease both;
+}
+
+.hero-blob {
+  position: absolute;
+  width: 520px; height: 520px;
+  background: radial-gradient(ellipse at center, var(--olive-bg) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-main-img {
+  position: relative; z-index: 2;
+  width: 420px; height: 480px;
+  border-radius: 200px 200px 80px 80px;
+  background: linear-gradient(160deg, #c8d8a8 0%, #8aa868 40%, #5c7838 100%);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.produce-art {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+
+.float-card {
+  position: absolute;
+  bottom: 52px; left: -30px;
+  z-index: 10;
+  background: white;
+  border-radius: var(--r-md);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-md);
+  display: flex; align-items: center; gap: 12px;
+  width: 260px;
+  animation: floatCard 3s ease-in-out infinite;
+}
+.float-card-icon {
+  width: 40px; height: 40px;
+  background: var(--olive-bg);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+}
+.float-card-text { flex: 1; }
+.float-card-title {
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--olive); letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+.float-card-sub { font-size: 0.7rem; color: var(--text-lt); line-height: 1.4; }
+
+.float-badge {
+  position: absolute;
+  top: 48px; right: -20px;
+  z-index: 10;
+  background: var(--olive);
+  color: white;
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  animation: floatCard 3s 1.5s ease-in-out infinite;
+}
+.float-badge-num {
+  font-family: var(--serif);
+  font-size: 1.5rem; font-weight: 600; line-height: 1;
+}
+.float-badge-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; }
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* VALUES (first strip) */
+.values {
+  background: var(--cream);
+  padding: 70px 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--cream2);
+  border-bottom: 1px solid var(--cream2);
+}
+.value-item {
+  display: flex; align-items: flex-start; gap: 18px;
+  padding: 0 40px 0 0;
+  border-right: 1px solid var(--cream2);
+}
+.value-item:first-child { padding-left: 0; }
+.value-item:last-child { border-right: none; padding-right: 0; padding-left: 40px; }
+.value-item:nth-child(2) { padding-left: 40px; }
+.value-icon {
+  width: 48px; height: 48px;
+  background: var(--olive-bg);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(163,179,122,0.3);
+}
+.value-title {
+  font-family: var(--serif);
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.value-text {
+  font-size: 0.8rem; color: var(--text-lt);
+  line-height: 1.65;
+}
+
+/* FEATURED SELECTION */
+.featured {
+  padding: 100px 80px;
+  background: var(--ivory);
+}
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.section-label-line {
+  width: 32px; height: 1px; background: var(--olive-lt);
+}
+.section-label-text {
+  font-size: 0.72rem; font-weight: 500;
+  color: var(--olive); letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+.section-heading {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.section-heading em { font-style: italic; color: var(--olive); }
+
+.section-sub {
+  font-size: 0.92rem; color: var(--text-lt); line-height: 1.7;
+  max-width: 480px; margin-bottom: 56px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.pcard {
+  background: white;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.35s cubic-bezier(.22,.68,0,1.2), box-shadow 0.35s;
+  cursor: pointer;
+  display: flex; flex-direction: column;
+  border: 1px solid rgba(212,197,173,0.3);
+}
+.pcard:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: var(--shadow-lg);
+}
+
+.pcard-img {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.pcard-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.pcard:hover .pcard-img img { transform: scale(1.06); }
+
+.pcard-stock {
+  position: absolute; top: 14px; right: 14px;
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 100px;
+  background: rgba(255,255,255,0.92);
+  color: var(--olive);
+}
+.stock-low { background: rgba(255,248,220,0.95); color: var(--brown); }
+
+.pcard-fav {
+  position: absolute; top: 14px; left: 14px;
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  opacity: 0; transition: opacity 0.2s;
+  cursor: pointer;
+}
+.pcard:hover .pcard-fav { opacity: 1; }
+
+.pcard-body { padding: 22px 24px 24px; flex: 1; display: flex; flex-direction: column; }
+.pcard-category {
+  font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--olive-mid); margin-bottom: 8px;
+}
+.pcard-title {
+  font-family: var(--serif);
+  font-size: 1.2rem; font-weight: 600;
+  color: var(--text); margin-bottom: 8px;
+  line-height: 1.2;
+}
+.pcard-desc {
+  font-size: 0.78rem; color: var(--text-lt);
+  line-height: 1.6; margin-bottom: 16px; flex: 1;
+}
+.pcard-rating {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 16px;
+}
+.stars-row { color: #d4af37; font-size: 0.7rem; letter-spacing: 1px; }
+.rating-num { font-size: 0.72rem; color: var(--text-lt); }
+.pcard-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--cream2);
+}
+.pcard-price { display: flex; flex-direction: column; }
+.price-main {
+  font-family: var(--serif);
+  font-size: 1.35rem; font-weight: 600;
+  color: var(--text); line-height: 1;
+}
+.price-unit { font-size: 0.7rem; color: var(--text-lt); margin-top: 2px; }
+.pcard-add {
+  width: 38px; height: 38px;
+  background: var(--olive);
+  color: white;
+  border: none; border-radius: 50%;
+  font-size: 1.2rem; line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+.pcard-add:hover { background: var(--olive-mid); transform: scale(1.1) rotate(90deg); }
+
+.featured-footer {
+  margin-top: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 40px;
+  border-top: 1px solid var(--cream2);
+}
+.featured-footer-text {
+  font-family: var(--serif);
+  font-size: 1.25rem; color: var(--text-mid);
+  font-style: italic;
+}
+.btn-outline-olive {
+  height: 48px; padding: 0 28px;
+  border: 1.5px solid var(--olive);
+  color: var(--olive);
+  background: transparent;
+  border-radius: 100px;
+  font-family: var(--sans); font-size: 0.82rem;
+  font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-outline-olive:hover { background: var(--olive); color: white; }
+
+/* FARM SECTION (moved to after testimonials) */
+.farm-section {
+  padding: 100px 80px;
+  background: var(--cream);
+}
+.farm-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.farm-image {
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.farm-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.farm-image:hover img {
+  transform: scale(1.02);
+}
+.farm-badge {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  background: var(--olive);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+  background: rgba(92,107,58,0.9);
+}
+.farm-badge span {
+  font-size: 1.2rem;
+}
+.farm-content {
+  display: flex;
+  flex-direction: column;
+}
+.farm-content .section-label {
+  margin-bottom: 16px;
+}
+.farm-content h2 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  color: var(--text);
+}
+.farm-content h2 em {
+  font-style: italic;
+  color: var(--olive);
+}
+.farm-description {
+  font-size: 1rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.farm-list {
+  list-style: none;
+  margin-bottom: 32px;
+}
+.farm-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+  color: var(--text-mid);
+}
+.farm-list li::before {
+  content: ":seedling:";
+  font-size: 1.1rem;
+}
+.farm-cta {
+  align-self: flex-start;
+}
+@media (max-width: 1024px) {
+  .farm-grid { grid-template-columns: 1fr; gap: 48px; }
+  .farm-section { padding: 80px 48px; }
+}
+@media (max-width: 768px) {
+  .farm-section { padding: 60px 24px; }
+}
+
+/* CATEGORIES */
+.categories {
+  padding: 100px 80px;
+  background: var(--ivory);
+}
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 56px;
+}
+.cat-card {
+  background: white;
+  border-radius: var(--r-lg);
+  padding: 36px 28px;
+  text-decoration: none;
+  display: flex; flex-direction: column; align-items: flex-start;
+  border: 1px solid rgba(212,197,173,0.3);
+  position: relative; overflow: hidden;
+  transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), box-shadow 0.3s;
+  box-shadow: var(--shadow-sm);
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s;
+}
+.cat-card.visible {
+  opacity: 1; transform: translateY(0);
+}
+.cat-card:hover {
+  transform: translateY(-6px) scale(1.01) !important;
+  box-shadow: var(--shadow-md);
+}
+.cat-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--olive-bg) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cat-card:hover::before { opacity: 1; }
+.cat-emoji {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  display: block;
+  position: relative; z-index: 1;
+}
+.cat-name {
+  font-family: var(--serif);
+  font-size: 1.35rem; font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  position: relative; z-index: 1;
+}
+.cat-count {
+  font-size: 0.75rem;
+  color: var(--olive-mid);
+  letter-spacing: 0.08em;
+  position: relative; z-index: 1;
+}
+.cat-arrow {
+  margin-top: auto;
+  padding-top: 24px;
+  color: var(--olive);
+  font-size: 1.2rem;
+  position: relative; z-index: 1;
+  transform: translateX(0);
+  transition: transform 0.2s;
+}
+.cat-card:hover .cat-arrow { transform: translateX(4px); }
+
+/* TESTIMONIALS (fixed - removed extra quotation marks) */
+.testimonials {
+  padding: 100px 80px;
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.testimonials::before {
+  content: '"';
+  position: absolute;
+  font-family: var(--serif);
+  font-size: 28rem;
+  color: var(--cream2);
+  top: -60px; left: 40px;
+  line-height: 1;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+  position: relative; z-index: 1;
+}
+.tcard {
+  background: white;
+  border-radius: var(--r-lg);
+  padding: 36px 32px;
+  border: 1px solid rgba(212,197,173,0.3);
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s;
+}
+.tcard.visible { opacity: 1; transform: translateY(0); }
+.tcard:hover { box-shadow: var(--shadow-md); }
+.tcard-stars {
+  color: #d4af37;
+  font-size: 0.85rem; letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+.tcard-quote {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text-mid);
+  line-height: 1.75;
+  flex: 1;
+  margin-bottom: 28px;
+}
+/* REMOVED the ::before and ::after pseudo-elements that were adding extra quotes */
+.tcard-author {
+  display: flex; align-items: center; gap: 14px;
+  padding-top: 24px;
+  border-top: 1px solid var(--cream2);
+}
+.tcard-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--olive-bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  border: 2px solid var(--olive-lt);
+}
+.tcard-name {
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.tcard-role {
+  font-size: 0.72rem; color: var(--text-lt);
+  letter-spacing: 0.06em;
+}
+
+/* CTA BANNER */
+.cta-banner {
+  background: var(--olive);
+  padding: 100px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-banner::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  right: -100px; top: -200px;
+  pointer-events: none;
+}
+.cta-banner::after {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  left: 30%; bottom: -150px;
+  pointer-events: none;
+}
+.cta-left { position: relative; z-index: 1; }
+.cta-eyebrow {
+  font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--olive-lt);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.cta-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--olive-lt);
+}
+.cta-heading {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 300;
+  color: white;
+  line-height: 1.2;
+}
+.cta-heading em { font-style: italic; }
+.cta-right {
+  position: relative; z-index: 1;
+  display: flex; gap: 14px; align-items: center; flex-shrink: 0;
+}
+.btn-white {
+  height: 52px; padding: 0 32px;
+  background: white;
+  color: var(--olive);
+  border: none; border-radius: 100px;
+  font-family: var(--sans); font-size: 0.87rem;
+  font-weight: 600; letter-spacing: 0.06em;
+  cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.btn-white:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+}
+.btn-ghost-white {
+  height: 52px; padding: 0 28px;
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 100px;
+  font-family: var(--sans); font-size: 0.87rem;
+  font-weight: 400; letter-spacing: 0.06em;
+  cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+.btn-ghost-white:hover {
+  border-color: rgba(255,255,255,0.7);
+  color: white;
+  background: rgba(255,255,255,0.08);
+}
+
+/* FOOTER */
+.footer {
+  background: var(--text);
+  padding: 80px 80px 40px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+.footer-logo-leaf {
+  width: 30px; height: 30px;
+  background: var(--olive);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  flex-shrink: 0;
+}
+.footer-logo-text {
+  font-family: var(--serif);
+  font-size: 1.25rem; font-weight: 600;
+  color: white;
+}
+.footer-logo-text span { color: var(--olive-lt); }
+.footer-tagline {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  max-width: 280px;
+  margin-bottom: 24px;
+}
+.footer-contact-item {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.footer-contact-item span { color: var(--olive-lt); font-size: 0.85rem; }
+.footer-col-title {
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a {
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--olive-lt); }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 28px;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.3);
+}
+.footer-legal {
+  display: flex; gap: 24px;
+}
+.footer-legal a {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.pcard { opacity: 0; transform: translateY(30px); transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.35s; }
+.pcard.visible { opacity: 1; transform: translateY(0); }
+.pcard:hover { transform: translateY(-8px) scale(1.01) !important; }
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .hero-left { padding: 80px 48px; }
+  .values { padding: 60px 48px; }
+  .featured, .categories, .testimonials, .farm-section { padding: 80px 48px; }
+  .cta-banner { padding: 80px 48px; flex-direction: column; align-items: flex-start; }
+  .footer { padding: 60px 48px 32px; }
+  .navbar { padding: 0 32px; }
+  .nav-links { gap: 24px; }
+}
+@media (max-width: 768px) {
+  .navbar { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero-left { padding: 60px 24px; }
+  .values { grid-template-columns: 1fr; padding: 48px 24px; gap: 32px; }
+  .value-item { border-right: none; padding: 0 !important; }
+  .featured, .categories, .testimonials, .farm-section { padding: 60px 20px; }
+  .products-grid, .categories-grid { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .featured-footer { flex-direction: column; gap: 20px; text-align: center; }
+  .cta-banner { padding: 60px 24px; }
+  .cta-right { flex-direction: column; width: 100%; }
+  .btn-white, .btn-ghost-white { width: 100%; justify-content: center; }
+  .footer { padding: 48px 24px 28px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
+  .hero-stats { gap: 28px; }
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 3px; }
+
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="acceuil.html" class="logo">
+    <div class="logo-leaf"></div>
+    <div class="logo-text">Green<span>Market</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="acceuil.html">Home</a></li>
+    <li><a href="catalogue.html">Shop</a></li>
+    <li><a href="#about">Our Story</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="panier.html" class="cart-btn" aria-label="Cart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-badge">3</span>
+    </a>
+    <a href="login.html" class="signin-btn">Se connecter</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow"><div class="eyebrow-dot"></div><span class="eyebrow-text">Certified Organic · Locally Sourced</span></div>
+    <h1 class="hero-title">Nature's Finest,<br><em>Delivered</em><br><span class="line-accent">Fresh</span></h1>
+    <p class="hero-sub">We connect you directly with local organic farmers and artisan producers. Every product is sustainably grown, carefully harvested, and delivered fresh to your door — no middlemen, no compromise.</p>
+    <div class="hero-ctas">
+      <a href="#featured" class="btn-fill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Explore Collection</a>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">240+</div><div class="stat-label">Farmers</div></div>
+      <div class="stat"><div class="stat-num">1.2k</div><div class="stat-label">Products</div></div>
+      <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Organic</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-blob"></div>
+    <div class="hero-main-img"><div class="produce-art"><svg width="340" height="380" viewBox="0 0 340 380" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="170" cy="190" r="160" fill="rgba(255,255,255,0.08)"/><ellipse cx="170" cy="220" rx="110" ry="80" fill="#4a7a2a" opacity="0.9"/><ellipse cx="145" cy="200" rx="75" ry="55" fill="#5c8c34" opacity="0.85" transform="rotate(-15 145 200)"/><ellipse cx="195" cy="205" rx="70" ry="50" fill="#6aa040" opacity="0.8" transform="rotate(10 195 205)"/><ellipse cx="170" cy="190" rx="55" ry="45" fill="#7ab848" opacity="0.9"/><ellipse cx="170" cy="185" rx="38" ry="32" fill="#8acc54" opacity="0.95"/><ellipse cx="170" cy="182" rx="22" ry="20" fill="#a0de68"/><path d="M90 160 Q80 200 88 240" stroke="#e8650a" stroke-width="22" stroke-linecap="round"/><path d="M90 160 Q82 180 84 200" stroke="#ff8228" stroke-width="18" stroke-linecap="round"/><path d="M90 160 Q78 130 70 115" stroke="#4a8c2a" stroke-width="4" stroke-linecap="round"/><path d="M90 160 Q85 128 82 112" stroke="#5aa034" stroke-width="3" stroke-linecap="round"/><path d="M90 160 Q98 130 100 114" stroke="#4a8c2a" stroke-width="3" stroke-linecap="round"/><path d="M248 155 Q258 195 250 238" stroke="#e8650a" stroke-width="20" stroke-linecap="round"/><path d="M248 155 Q256 178 254 198" stroke="#ff8228" stroke-width="16" stroke-linecap="round"/><path d="M248 155 Q260 124 264 108" stroke="#4a8c2a" stroke-width="4" stroke-linecap="round"/><path d="M248 155 Q252 122 252 106" stroke="#5aa034" stroke-width="3" stroke-linecap="round"/><path d="M248 155 Q240 126 238 110" stroke="#4a8c2a" stroke-width="3" stroke-linecap="round"/><circle cx="148" cy="130" r="32" fill="url(#tgrad1)"/><path d="M148 100 Q142 86 136 80 Q148 88 154 80 Q148 90 148 100" fill="#4a8c2a"/><circle cx="200" cy="126" r="28" fill="url(#tgrad2)"/><path d="M200 98 Q194 84 188 78 Q200 86 206 78 Q200 88 200 98" fill="#4a8c2a"/><circle cx="125" cy="158" r="16" fill="#e03030"/><circle cx="220" cy="152" r="14" fill="#cc2828"/><rect x="155" y="290" width="32" height="38" rx="5" fill="#f9a825" opacity="0.7"/><rect x="158" y="286" width="26" height="8" rx="3" fill="#f57f17" opacity="0.7"/><ellipse cx="92" cy="290" rx="38" ry="22" fill="#c8893a" opacity="0.8"/><ellipse cx="92" cy="280" rx="36" ry="18" fill="#d99848" opacity="0.85"/><path d="M70 278 Q92 264 114 278" stroke="#e8aa58" stroke-width="2" fill="none" opacity="0.6"/><defs><radialGradient id="tgrad1" cx="35%" cy="30%"><stop offset="0%" stop-color="#ff6b6b"/><stop offset="100%" stop-color="#c0392b"/></radialGradient><radialGradient id="tgrad2" cx="35%" cy="30%"><stop offset="0%" stop-color="#ff5555"/><stop offset="100%" stop-color="#b03020"/></radialGradient></defs></svg></div></div>
+    <div class="float-card"><div class="float-card-icon">:herb:</div><div class="float-card-text"><div class="float-card-title">Certified Organic</div><div class="float-card-sub">Farm-fresh quality guaranteed</div></div></div>
+    <div class="float-badge"><div class="float-badge-num">4.9</div><div class="float-badge-label">★ Rating</div></div>
+  </div>
+</section>
+
+<!-- VALUES (first) -->
+<div class="values">
+  <div class="value-item"><div class="value-icon">:seedling:</div><div><div class="value-title">100% Organic</div><div class="value-text">Every product is certified organic and grown with sustainable practices that respect the land.</div></div></div>
+  <div class="value-item"><div class="value-icon">:handshake:</div><div><div class="value-title">Community First</div><div class="value-text">Supporting local farmers and artisans in our community — fair prices, real relationships.</div></div></div>
+  <div class="value-item"><div class="value-icon">:white_check_mark:</div><div><div class="value-title">Quality Assured</div><div class="value-text">We guarantee the highest quality in every product we offer. Your satisfaction, every time.</div></div></div>
+</div>
+
+<!-- FEATURED SELECTION -->
+<section class="featured" id="featured">
+  <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Handpicked for You</span></div>
+  <h2 class="section-heading">Featured <em>Selection</em></h2>
+  <p class="section-sub">Each product is carefully sourced from certified local farms — seasonal, fresh, and packed with goodness.</p>
+  <div class="products-grid">
+    <div class="pcard"><div class="pcard-img"><img src="carrotarcenciel.png" alt="Rainbow carrots" loading="lazy"><span class="pcard-stock stock-in">● In Stock</span><div class="pcard-fav">♡</div></div><div class="pcard-body"><div class="pcard-category">Root Vegetables</div><div class="pcard-title">Rainbow Carrots</div><div class="pcard-desc">A vibrant mix of purple, yellow and orange heritage varieties. Naturally sweet, grown without pesticides.</div><div class="pcard-rating"><span class="stars-row">★★★★★</span><span class="rating-num">4.9 (128 reviews)</span></div><div class="pcard-footer"><div class="pcard-price"><span class="price-main">$4.50</span><span class="price-unit">per bunch · ~500g</span></div><button class="pcard-add" aria-label="Add to cart">+</button></div></div></div>
+    <div class="pcard"><div class="pcard-img"><img src="Tomates anciennes.png" alt="Heirloom tomatoes" loading="lazy"><span class="pcard-stock stock-low">:zap: Low Stock</span><div class="pcard-fav">♡</div></div><div class="pcard-body"><div class="pcard-category">Heritage Produce</div><div class="pcard-title">Heirloom Tomatoes</div><div class="pcard-desc">Old-world varieties bursting with complex flavour. Vine-ripened under the sun — no artificial ripening.</div><div class="pcard-rating"><span class="stars-row">★★★★★</span><span class="rating-num">4.8 (94 reviews)</span></div><div class="pcard-footer"><div class="pcard-price"><span class="price-main">$6.20</span><span class="price-unit">per kg · mixed box</span></div><button class="pcard-add" aria-label="Add to cart">+</button></div></div></div>
+    <div class="pcard"><div class="pcard-img"><img src="https://images.pexels.com/photos/1775043/pexels-photo-1775043.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Organic sourdough bread" loading="lazy"><span class="pcard-stock stock-in">● In Stock</span><div class="pcard-fav">♡</div></div><div class="pcard-body"><div class="pcard-category">Artisan Bakery</div><div class="pcard-title">Organic Sourdough Bread</div><div class="pcard-desc">Stone-milled heritage wheat, 48-hour cold ferment. Crisp crust, open crumb — baked fresh every morning.</div><div class="pcard-rating"><span class="stars-row">★★★★★</span><span class="rating-num">5.0 (211 reviews)</span></div><div class="pcard-footer"><div class="pcard-price"><span class="price-main">$8.90</span><span class="price-unit">per loaf · 800g</span></div><button class="pcard-add" aria-label="Add to cart">+</button></div></div></div>
+    <div class="pcard"><div class="pcard-img"><img src="https://images.pexels.com/photos/1638280/pexels-photo-1638280.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" loading="lazy"><span class="pcard-stock stock-in">● In Stock</span><div class="pcard-fav">♡</div></div><div class="pcard-body"><div class="pcard-category">Raw & Natural</div><div class="pcard-title">Wild Forest Honey</div><div class="pcard-desc">Raw, unfiltered honey from ancient forest wildflowers. Rich in antioxidants, unpasteurised and full of life.</div><div class="pcard-rating"><span class="stars-row">★★★★★</span><span class="rating-num">4.9 (176 reviews)</span></div><div class="pcard-footer"><div class="pcard-price"><span class="price-main">$12.00</span><span class="price-unit">per jar · 400g</span></div><button class="pcard-add" aria-label="Add to cart">+</button></div></div></div>
+  </div>
+  <div class="featured-footer"><p class="featured-footer-text">"From soil to soul — taste the difference."</p><a href="catalogue.html" class="btn-outline-olive">View Full Catalogue<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Shop by Category</span></div>
+  <h2 class="section-heading">Explore Our <em>Collections</em></h2>
+  <p class="section-sub">Browse our curated range of organic produce, artisan goods, and locally crafted products.</p>
+  <div class="categories-grid">
+    <a href="catalogue.html" class="cat-card"><span class="cat-emoji">:apple:</span><div class="cat-name">Fresh Fruits</div><div class="cat-count">41+ products</div><div class="cat-arrow">→</div></a>
+    <a href="catalogue.html" class="cat-card"><span class="cat-emoji">:broccoli:</span><div class="cat-name">Vegetables</div><div class="cat-count">25+ products</div><div class="cat-arrow">→</div></a>
+    <a href="catalogue.html" class="cat-card"><span class="cat-emoji">:basket:</span><div class="cat-name">Handmade Goods</div><div class="cat-count">21+ products</div><div class="cat-arrow">→</div></a>
+    <a href="catalogue.html" class="cat-card"><span class="cat-emoji">:herb:</span><div class="cat-name">Certified Organic</div><div class="cat-count">32+ products</div><div class="cat-arrow">→</div></a>
+  </div>
+</section>
+
+<!-- TESTIMONIALS (fixed - no extra quotes) -->
+<section class="testimonials" id="testimonials">
+  <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">What Our Customers Say</span></div>
+  <h2 class="section-heading">Real <em>Experiences</em></h2>
+  <p class="section-sub">From our community members — honest words from people who care about what they eat.</p>
+  <div class="testimonials-grid">
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><p class="tcard-quote">The rainbow carrots and heirloom tomatoes have completely transformed my cooking. The quality is unmatched and you can really taste the difference!</p><div class="tcard-author"><div class="tcard-avatar">:female-cook:</div><div><div class="tcard-name">Emma Thompson</div><div class="tcard-role">Home Chef</div></div></div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><p class="tcard-quote">GreenMarket has become my go-to source for organic produce. The artisan sourdough and local honey are absolutely phenomenal.</p><div class="tcard-author"><div class="tcard-avatar">:writing_hand:</div><div><div class="tcard-name">James Mitchell</div><div class="tcard-role">Food Blogger</div></div></div></div>
+    <div class="tcard"><div class="tcard-stars">★★★★★</div><p class="tcard-quote">I recommend GreenMarket to all my clients. Fresh, organic, and sustainably sourced — everything you need for healthy living.</p><div class="tcard-author"><div class="tcard-avatar">:green_salad:</div><div><div class="tcard-name">Sophie Anderson</div><div class="tcard-role">Nutritionist</div></div></div></div>
+  </div>
+</section>
+
+<!-- FARM SECTION (MOVED HERE - before the CTA banner) -->
+<section class="farm-section">
+  <div class="farm-grid">
+    <div class="farm-image">
+      <img src="https://cdn.pixabay.com/photo/2016/11/29/03/53/agriculture-1867454_640.jpg" alt="Organic farm harvest" loading="lazy">
+      <div class="farm-badge"><span>:herb:</span> 100% traceable</div>
+    </div>
+    <div class="farm-content">
+      <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">From our family to yours</span></div>
+      <h2>From <em>Our Farm</em><br> to Your Table</h2>
+      <p class="farm-description">We work directly with over 240 local organic farmers who practice regenerative agriculture. Every fruit, vegetable, and loaf of bread tells a story of soil health, biodiversity, and honest craftsmanship.</p>
+      <ul class="farm-list">
+        <li>No synthetic pesticides or GMOs</li>
+        <li>Harvested within 24 hours of delivery</li>
+        <li>Fair prices for farmers – fair prices for you</li>
+      </ul>
+      <a href="boutique.html" class="btn-fill farm-cta">Meet our farmers →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER (Join Our Growing Community) -->
+<section class="cta-banner">
+  <div class="cta-left"><div class="cta-eyebrow">Join Our Growing Community</div><h2 class="cta-heading">Be part of the<br><em>sustainable food movement</em></h2></div>
+  <div class="cta-right"><a href="login.html" class="btn-white">Get Started<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a><a href="#about" class="btn-ghost-white">Learn More</a></div>
+</section>
+
+<!-- VALUES (second - keep for design) -->
+<div class="values">
+  <div class="value-item"><div class="value-icon"></div><div><div class="value-title">100% Organic</div><div class="value-text">Every product is certified organic and grown with sustainable practices that respect the land.</div></div></div>
+  <div class="value-item"><div class="value-icon"></div><div><div class="value-title">Community First</div><div class="value-text">Supporting local farmers and artisans in our community — fair prices, real relationships.</div></div></div>
+  <div class="value-item"><div class="value-icon"></div><div><div class="value-title">Quality Assured</div><div class="value-text">We guarantee the highest quality in every product we offer. Your satisfaction, every time.</div></div></div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand"><a href="acceuil.html" class="footer-logo"><div class="footer-logo-leaf"></div><div class="footer-logo-text">Green<span>Market</span></div></a><p class="footer-tagline">Artisan & Organic. Connecting communities through sustainable, organic food and artisan goods.</p><div class="footer-contact-item"><span>✉</span> hello@greenmarket.com</div><div class="footer-contact-item"><span>☎</span> +1 (555) 123-4567</div><div class="footer-contact-item"><span>:round_pushpin:</span> 123 Green Street, Eco City, CA 94102</div></div>
+    <div class="footer-col"><div class="footer-col-title">Shop</div><ul><li><a href="catalogue.html">All Products</a></li><li><a href="catalogue.html">Fresh Fruits</a></li><li><a href="catalogue.html">Vegetables</a></li><li><a href="catalogue.html">Artisan Goods</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Company</div><ul><li><a href="acceuil.html">Home</a></li><li><a href="#about">Our Story</a></li><li><a href="login.html" id="signInBtn">Se connecter</a></li><li><a href="login.html">Join Us</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Support</div><ul><li><a href="#faq">FAQ</a></li><li><a href="login.html">Contact</a></li><li><a href="#">Delivery Info</a></li><li><a href="#">Returns</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><div class="footer-copy">© 2026 GreenMarket. All rights reserved.</div><div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div></div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 20); });
+  const animTargets = document.querySelectorAll('.pcard, .tcard, .cat-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => entry.target.classList.add('visible'), parseInt(delay));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  animTargets.forEach((el, i) => { el.dataset.delay = i * 80; observer.observe(el); });
+  document.querySelectorAll('.pcard-add').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.textContent = '✓';
+      btn.style.background = '#748249';
+      setTimeout(() => { btn.textContent = '+'; btn.style.background = ''; }, 1200);
+    });
+  });
+
+  (function(){
+    const _u = localStorage.getItem('greenmarket_user');
+    const signBtn = document.getElementById('signInBtn');
+    const dashBtn = document.getElementById('dashBtn');
+    if(_u){
+      const user = JSON.parse(_u);
+      if(dashBtn){ dashBtn.style.display='inline-flex'; }
+      if(signBtn){ signBtn.style.display='none'; }
+    }
+  })();
+</script>
+</body>
+</html>

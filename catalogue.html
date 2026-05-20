@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>GreenMarket – Catalogue produits bio & artisanaux</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --ivory: #f9f5ef;
+      --cream: #f2ebe0;
+      --cream2: #e8dfd0;
+      --sand: #d4c5ad;
+      --olive: #5c6b3a;
+      --olive-mid: #748249;
+      --olive-lt: #a3b37a;
+      --olive-bg: #edf0e4;
+      --brown: #6b4c2a;
+      --brown-lt: #9a7455;
+      --text: #1e1e18;
+      --text-mid: #4a4a3a;
+      --text-lt: #8a8a74;
+      --white: #ffffff;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Jost', sans-serif;
+      --r-sm: 12px;
+      --r-md: 20px;
+      --r-lg: 32px;
+      --shadow-sm: 0 2px 12px rgba(60, 50, 20, 0.07);
+      --shadow-md: 0 8px 32px rgba(60, 50, 20, 0.10);
+      --shadow-lg: 0 24px 64px rgba(60, 50, 20, 0.13);
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--ivory);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 72px;
+      background: rgba(249, 245, 239, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(212, 197, 173, 0.35);
+      transition: box-shadow 0.3s;
+    }
+    .navbar.scrolled {
+      box-shadow: var(--shadow-sm);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+    .logo-leaf {
+      width: 34px;
+      height: 34px;
+      background: var(--olive);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+    }
+    .logo-leaf::after {
+      content: '';
+      width: 14px;
+      height: 14px;
+      background: var(--ivory);
+      border-radius: 50%;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+    .logo-text {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--olive);
+      letter-spacing: 0.02em;
+    }
+    .logo-text span {
+      color: var(--brown);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--olive);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .cart-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--sand);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.2s;
+      color: var(--text-mid);
+    }
+    .cart-btn:hover {
+      background: var(--cream);
+      border-color: var(--olive-lt);
+    }
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 18px;
+      height: 18px;
+      background: var(--olive);
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 600;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .signin-btn {
+      height: 38px;
+      padding: 0 22px;
+      background: var(--olive);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .signin-btn:hover {
+      background: var(--olive-mid);
+    }
+
+    /* Catalog Layout */
+    .catalog-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 120px 60px 80px;
+    }
+    .breadcrumb {
+      margin-bottom: 32px;
+      font-size: 0.85rem;
+      color: var(--text-lt);
+    }
+    .breadcrumb a {
+      color: var(--olive);
+      text-decoration: none;
+    }
+    .catalog-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-label-line {
+      width: 32px;
+      height: 1px;
+      background: var(--olive-lt);
+    }
+    .section-label-text {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--olive);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .catalog-header h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      margin-bottom: 12px;
+    }
+    .catalog-header h1 em {
+      font-style: italic;
+      color: var(--olive);
+    }
+    .catalog-header p {
+      font-size: 0.92rem;
+      color: var(--text-lt);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 48px;
+    }
+
+    /* Filters Sidebar */
+    .filters-sidebar {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: 28px 24px;
+      border: 1px solid rgba(212, 197, 173, 0.3);
+      box-shadow: var(--shadow-sm);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    .filter-group {
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--cream2);
+      padding-bottom: 24px;
+    }
+    .filter-group:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .filter-title {
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      margin-bottom: 18px;
+    }
+    .filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .filter-options label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+    }
+    .filter-options input {
+      accent-color: var(--olive);
+      width: 16px;
+      height: 16px;
+    }
+    .apply-filters-btn, .reset-filters {
+      width: 100%;
+      padding: 12px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 12px;
+    }
+    .apply-filters-btn {
+      background: var(--olive);
+      color: white;
+      border: none;
+    }
+    .apply-filters-btn:hover {
+      background: var(--olive-mid);
+    }
+    .reset-filters {
+      background: transparent;
+      border: 1px solid var(--sand);
+      color: var(--text-mid);
+    }
+    .reset-filters:hover {
+      border-color: var(--olive);
+      color: var(--olive);
+    }
+
+    /* Search & Products */
+    .search-bar {
+      margin-bottom: 28px;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 14px 20px;
+      border: 1px solid var(--sand);
+      border-radius: 60px;
+      font-size: 0.9rem;
+      background: var(--white);
+      font-family: var(--sans);
+    }
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--olive);
+    }
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--cream2);
+    }
+    .products-count {
+      font-size: 0.85rem;
+      color: var(--text-lt);
+    }
+    .sort-select {
+      padding: 8px 16px;
+      border: 1px solid var(--sand);
+      border-radius: 40px;
+      background: var(--white);
+      font-family: var(--sans);
+      font-size: 0.8rem;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    /* Product Card */
+    .product-card {
+      background: white;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.35s, box-shadow 0.35s;
+      border: 1px solid rgba(212, 197, 173, 0.3);
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+    .product-img {
+      height: 200px;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--olive-bg);
+    }
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(92, 107, 58, 0.92);
+      backdrop-filter: blur(4px);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+    .product-fav {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+    .product-card:hover .product-fav {
+      opacity: 1;
+    }
+    .product-fav:hover {
+      background: var(--olive);
+      color: white;
+    }
+    .product-info {
+      padding: 1.2rem 1.2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-category {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--olive-mid);
+      margin-bottom: 6px;
+    }
+    .product-title {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .product-desc {
+      font-size: 0.75rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      flex: 1;
+    }
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .stars {
+      color: #d4af37;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+    }
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--cream2);
+    }
+    .product-price {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--olive);
+    }
+    .add-to-cart-btn {
+      width: 36px;
+      height: 36px;
+      background: var(--olive);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .add-to-cart-btn:hover {
+      background: var(--olive-mid);
+      transform: scale(1.1);
+    }
+
+    /* Product Modal */
+    .product-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 20, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.2s;
+    }
+    .product-modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .modal-content {
+      background: var(--white);
+      width: 90%;
+      max-width: 900px;
+      max-height: 85vh;
+      border-radius: 40px;
+      overflow-y: auto;
+    }
+    .modal-header {
+      background: var(--olive-bg);
+      padding: 1.2rem 2rem;
+      border-bottom: 1px solid var(--cream2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+    }
+    .modal-header h2 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--olive);
+    }
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: var(--text-mid);
+    }
+    .modal-body {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .modal-img {
+      background-size: cover;
+      background-position: center;
+      border-radius: 24px;
+      height: 260px;
+    }
+    .modal-price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--olive);
+      margin: 16px 0 10px;
+    }
+    .toast-msg {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f3b1c;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .toast-msg.show {
+      opacity: 1;
+    }
+    footer {
+      background: var(--text);
+      padding: 48px 60px 32px;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      font-size: 0.8rem;
+      margin-top: 60px;
+    }
+    @media (max-width: 1024px) {
+      .catalog-container { padding: 100px 40px 60px; }
+      .catalog-layout { grid-template-columns: 1fr; }
+      .filters-sidebar { position: static; }
+      .modal-body { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 24px; }
+      .nav-links { display: none; }
+      .catalog-container { padding: 100px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="acceuil.html" class="logo">
+    <div class="logo-leaf"></div>
+    <div class="logo-text">Green<span>Market</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="acceuil.html">Accueil</a></li>
+    <li><a href="boutique.html">Boutiques</a></li>
+    <li><a href="catalogue.html" class="active">Catalogue</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="panier.html" class="cart-btn" id="cartBtn">
+      <i class="fas fa-shopping-basket"></i>
+      <span class="cart-badge" id="cartCounter">0</span>
+    </button>
+    <a href="login.html" class="signin-btn">Se connecter</a>
+  </div>
+</nav>
+
+<main class="catalog-container">
+  <div class="breadcrumb"><a href="acceuil.html">Accueil</a> / <a href="catalogue.html">Catalogue</a></div>
+  <div class="catalog-header">
+    <div class="section-label"><div class="section-label-line"></div><span class="section-label-text">Produits frais & bio</span></div>
+    <h1>Notre <em>Catalogue</em> complet</h1>
+    <p>Découvrez plus de 30 produits issus de l'agriculture biologique et du savoir-faire artisanal local.</p>
+  </div>
+  <div class="catalog-layout">
+    <aside class="filters-sidebar">
+      <div class="filter-group">
+        <div class="filter-title"><i class="fas fa-tags"></i> Catégories</div>
+        <div class="filter-options" id="categoryFilters"></div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-title"><i class="fas fa-euro-sign"></i> Prix</div>
+        <div class="filter-options">
+          <label><input type="radio" name="price" value="all" checked> Tous</label>
+          <label><input type="radio" name="price" value="under8"> Moins de 8€</label>
+          <label><input type="radio" name="price" value="8-15"> 8€ - 15€</label>
+          <label><input type="radio" name="price" value="over15"> Plus de 15€</label>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-title"><i class="fas fa-star"></i> Note</div>
+        <div class="filter-options">
+          <label><input type="radio" name="rating" value="0" checked> Toutes</label>
+          <label><input type="radio" name="rating" value="4"> 4★ et plus</label>
+          <label><input type="radio" name="rating" value="4.5"> 4.5★ et plus</label>
+        </div>
+      </div>
+      <button class="apply-filters-btn" id="applyFilters">Appliquer les filtres</button>
+      <button class="reset-filters" id="resetFilters">Réinitialiser</button>
+    </aside>
+    <div>
+      <div class="search-bar"><input type="text" id="searchInput" placeholder="🔍 Rechercher un produit..."></div>
+      <div class="products-header"><span class="products-count" id="productsCount">0 produits</span><select class="sort-select" id="sortSelect"><option value="default">Trier par défaut</option><option value="priceAsc">Prix croissant</option><option value="priceDesc">Prix décroissant</option><option value="rating">Meilleures notes</option></select></div>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </div>
+</main>
+
+<div id="productModal" class="product-modal"><div class="modal-content"><div class="modal-header"><h2 id="modalTitle">Détail produit</h2><button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button></div><div class="modal-body" id="modalBody"></div></div></div>
+<div id="toastMsg" class="toast-msg"><i class="fas fa-check-circle"></i> <span id="toastText">Ajouté au panier</span></div>
+<footer><p><i class="fas fa-leaf"></i> GreenMarket – Soutenons l'agriculture locale et les circuits courts.</p><p>© 2026 GreenMarket – Tous droits réservés</p></footer>
+
+<script>
+  // ---------- COMPLETE PRODUCT DATABASE (35+ products) ----------
+  const allProducts = [
+    { id: 1, name: "Carottes arc-en-ciel", category: "Légumes", price: 4.50, stock: 28, rating: 4.9, desc: "Mélange vibrant de carottes pourpres, oranges et jaunes.", img: "carrotarcenciel.png", unit: "botte" },
+    { id: 2, name: "Tomates anciennes", category: "Légumes", price: 6.20, stock: 15, rating: 4.8, desc: "Variétés anciennes au goût authentique et sucré.", img: "Tomates anciennes.png", unit: "kg" },
+    { id: 3, name: "Betteraves rouges", category: "Légumes", price: 3.80, stock: 42, rating: 4.6, desc: "Betteraves bio, douces et terreuses.", img: "Betteraves rouges.png", unit: "botte" },
+    { id: 4, name: "Courges butternut", category: "Légumes", price: 4.20, stock: 25, rating: 4.7, desc: "Courges au goût de noisette, riches en vitamines.", img: "Courges butternut.png", unit: "pièce" },
+    { id: 5, name: "Mesclun salade", category: "Légumes", price: 4.20, stock: 32, rating: 4.6, desc: "Mélange de jeunes pousses (roquette, mâche).", img: "https://images.pexels.com/photos/1211887/pexels-photo-1211887.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "sachet" },
+    { id: 6, name: "Poireaux bio", category: "Légumes", price: 3.50, stock: 38, rating: 4.5, desc: "Poireaux tendres et savoureux.", img: "Poireaux bio.png", unit: "botte" },
+    { id: 7, name: "Pommes Golden", category: "Fruits", price: 3.90, stock: 45, rating: 4.7, desc: "Pommes croquantes et juteuses, bio.", img: "pomme golden.png", unit: "kg" },
+    { id: 8, name: "Fraises gariguettes", category: "Fruits", price: 5.80, stock: 18, rating: 4.9, desc: "Fraises parfumées et sucrées.", img: "https://images.pexels.com/photos/46174/strawberries-berries-fruit-freshness-46174.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "barquette" },
+    { id: 9, name: "Oranges bio", category: "Fruits", price: 4.20, stock: 52, rating: 4.6, desc: "Oranges juteuses, parfaites pour jus.", img: "orange bio.png", unit: "kg" },
+    { id: 10, name: "Citrons jaunes", category: "Fruits", price: 3.50, stock: 38, rating: 4.5, desc: "Citrons bio, très aromatiques.", img: "https://images.pexels.com/photos/109275/pexels-photo-109275.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "kg" },
+    { id: 11, name: "Bananes équitables", category: "Fruits", price: 2.90, stock: 62, rating: 4.7, desc: "Bananes douces, commerce équitable.", img: "banane equitable.png", unit: "kg" },
+    { id: 12, name: "Miel toutes fleurs", category: "Artisanal", price: 12.50, stock: 24, rating: 4.9, desc: "Miel artisanal, récolté localement.", img: "https://images.pexels.com/photos/1638280/pexels-photo-1638280.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "pot" },
+    { id: 13, name: "Pain au levain", category: "Artisanal", price: 5.50, stock: 30, rating: 4.8, desc: "Pain croustillant, farine bio.", img: "https://images.pexels.com/photos/1775043/pexels-photo-1775043.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "pièce" },
+    { id: 14, name: "Huile d'olive vierge", category: "Épicerie", price: 18.50, stock: 14, rating: 4.9, desc: "Huile d'olive premium, première pression.", img: "https://images.pexels.com/photos/33783/olive-oil-salad-dressing-cooking-olive.jpg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "bouteille" },
+    { id: 15, name: "Jus d'orange frais", category: "Boissons", price: 6.90, stock: 24, rating: 4.6, desc: "Jus pressé à froid, sans sucres.", img: "https://images.pexels.com/photos/96974/pexels-photo-96974.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "bouteille" },
+    { id: 16, name: "Confiture fraise", category: "Artisanal", price: 7.20, stock: 18, rating: 4.8, desc: "Confiture maison, fruits bio.", img: "confiture fraise.png", unit: "pot" },
+    { id: 17, name: "Fromage de chèvre", category: "Bio", price: 11.40, stock: 12, rating: 4.7, desc: "Fromage fermier, lait cru.", img: "https://images.pexels.com/photos/821365/pexels-photo-821365.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "pièce" },
+    { id: 18, name: "Oignons doux", category: "Légumes", price: 2.80, stock: 55, rating: 4.4, desc: "Oignons doux bio.", img: "oignon doux.png", unit: "kg" },
+    { id: 19, name: "Ail rose", category: "Légumes", price: 4.20, stock: 32, rating: 4.6, desc: "Ail rose, très parfumé.", img: "ail rose.png", unit: "kg" },
+    { id: 20, name: "Pommes de terre", category: "Légumes", price: 2.50, stock: 120, rating: 4.5, desc: "Pommes de terre bio, farineuses.", img: "pomme de terre.png", unit: "kg" },
+    { id: 21, name: "Abricots secs", category: "Épicerie", price: 9.90, stock: 22, rating: 4.7, desc: "Abricots secs bio, sans sulfites.", img: "https://images.pexels.com/photos/1351237/pexels-photo-1351237.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "sachet" },
+    { id: 22, name: "Noix de pécan", category: "Épicerie", price: 13.50, stock: 16, rating: 4.8, desc: "Noix de pécan grillées.", img: "https://images.pexels.com/photos/5729522/pexels-photo-5729522.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "sachet" },
+    { id: 23, name: "Lentilles vertes", category: "Épicerie", price: 4.90, stock: 45, rating: 4.6, desc: "Lentilles bio, riches en protéines.", img: "https://images.pexels.com/photos/1333729/pexels-photo-1333729.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "kg" },
+    { id: 24, name: "Pâtes complètes", category: "Épicerie", price: 3.80, stock: 38, rating: 4.5, desc: "Pâtes artisanales au blé complet.", img: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "paquet" },
+    { id: 25, name: "Granola maison", category: "Artisanal", price: 8.50, stock: 28, rating: 4.9, desc: "Granola croustillant, miel et noix.", img: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "sachet" },
+    { id: 26, name: "Thé vert menthe", category: "Boissons", price: 5.20, stock: 34, rating: 4.7, desc: "Infusion bio, feuilles entières.", img: "https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop", unit: "boîte" }
+  ];
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  function updateCartBadge() {
+    const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById('cartCounter').innerText = total;
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById('toastMsg');
+    document.getElementById('toastText').innerText = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  function addToCart(product) {
+    const existing = cart.find(item => item.id === product.id);
+    if (existing) {
+      existing.quantity++;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+    updateCartBadge();
+    showToast(`${product.name} ajouté au panier`);
+  }
+
+  // Category filters generation
+  const categories = [...new Set(allProducts.map(p => p.category))];
+  const categoryFiltersDiv = document.getElementById('categoryFilters');
+  categories.forEach(cat => {
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="checkbox" value="${cat}" class="cat-checkbox"> ${cat}`;
+    categoryFiltersDiv.appendChild(label);
+  });
+
+  let currentProducts = [...allProducts];
+
+  function renderProducts(products) {
+    const grid = document.getElementById('productsGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    products.forEach(product => {
+      const starFull = '★'.repeat(Math.floor(product.rating));
+      const starHalf = (product.rating % 1) >= 0.5 ? '½' : '';
+      const starEmpty = '☆'.repeat(5 - Math.ceil(product.rating));
+      const stars = starFull + starHalf + starEmpty;
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-img" style="background-image:url('${product.img}')">
+          <div class="product-badge">${product.category}</div>
+          <div class="product-fav"><i class="far fa-heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="product-category">${product.category}</div>
+          <h3 class="product-title">${product.name}</h3>
+          <p class="product-desc">${product.desc.substring(0, 70)}${product.desc.length > 70 ? '...' : ''}</p>
+          <div class="product-rating"><div class="stars">${stars}</div><span>${product.rating}</span></div>
+          <div class="product-footer"><div class="product-price">${product.price.toFixed(2)}€</div><button class="add-to-cart-btn" data-id="${product.id}"><i class="fas fa-shopping-basket"></i></button></div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+    document.getElementById('productsCount').innerText = `${products.length} produits trouvés`;
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = parseInt(btn.dataset.id);
+        const product = allProducts.find(p => p.id === id);
+        if (product) addToCart(product);
+      });
+    });
+    document.querySelectorAll('.product-card').forEach((card, idx) => {
+      card.addEventListener('click', () => openModal(products[idx]));
+    });
+  }
+
+  function filterProducts() {
+    const selectedCategories = Array.from(document.querySelectorAll('.cat-checkbox:checked')).map(cb => cb.value);
+    const priceRadio = document.querySelector('input[name="price"]:checked').value;
+    const ratingRadio = parseFloat(document.querySelector('input[name="rating"]:checked').value);
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    let filtered = allProducts.filter(p => {
+      if (selectedCategories.length && !selectedCategories.includes(p.category)) return false;
+      if (priceRadio === 'under8' && p.price >= 8) return false;
+      if (priceRadio === '8-15' && (p.price < 8 || p.price > 15)) return false;
+      if (priceRadio === 'over15' && p.price <= 15) return false;
+      if (ratingRadio > 0 && p.rating < ratingRadio) return false;
+      if (searchTerm && !p.name.toLowerCase().includes(searchTerm) && !p.category.toLowerCase().includes(searchTerm)) return false;
+      return true;
+    });
+    const sortValue = document.getElementById('sortSelect').value;
+    if (sortValue === 'priceAsc') filtered.sort((a, b) => a.price - b.price);
+    else if (sortValue === 'priceDesc') filtered.sort((a, b) => b.price - a.price);
+    else if (sortValue === 'rating') filtered.sort((a, b) => b.rating - a.rating);
+    currentProducts = filtered;
+    renderProducts(currentProducts);
+  }
+
+  function resetFilters() {
+    document.querySelectorAll('.cat-checkbox').forEach(cb => cb.checked = false);
+    document.querySelector('input[name="price"][value="all"]').checked = true;
+    document.querySelector('input[name="rating"][value="0"]').checked = true;
+    document.getElementById('searchInput').value = '';
+    document.getElementById('sortSelect').value = 'default';
+    filterProducts();
+  }
+
+  function openModal(product) {
+    const modal = document.getElementById('productModal');
+    const modalBody = document.getElementById('modalBody');
+    document.getElementById('modalTitle').innerText = product.name;
+    modalBody.innerHTML = `
+      <div class="modal-img" style="background-image:url('${product.img}'); height:260px; border-radius:24px;"></div>
+      <div><div class="product-category" style="margin-bottom:8px;">${product.category}</div><h3>${product.name}</h3><p>${product.desc}</p><div class="modal-price">${product.price.toFixed(2)}€ / ${product.unit}</div><div><strong>Stock:</strong> ${product.stock} disponible(s)</div><div class="product-rating" style="margin:12px 0;"><div class="stars">★★★★★</div><span>${product.rating}/5</span></div><button id="modalAddToCart" class="add-to-cart-btn" style="width:100%; border-radius:40px; margin-top:16px; background:var(--olive); color:white; padding:12px;"><i class="fas fa-shopping-basket"></i> Ajouter au panier</button></div>
+    `;
+    modal.classList.add('active');
+    document.getElementById('modalAddToCart').addEventListener('click', () => {
+      addToCart(product);
+      modal.classList.remove('active');
+    });
+  }
+
+  document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('productModal').classList.remove('active'));
+  document.getElementById('productModal').addEventListener('click', (e) => { if (e.target === document.getElementById('productModal')) document.getElementById('productModal').classList.remove('active'); });
+  document.getElementById('applyFilters').addEventListener('click', filterProducts);
+  document.getElementById('resetFilters').addEventListener('click', resetFilters);
+  document.getElementById('searchInput').addEventListener('input', filterProducts);
+  document.getElementById('sortSelect').addEventListener('change', filterProducts);
+
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 20) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  });
+  updateCartBadge();
+  renderProducts(allProducts);
+
+  (function(){
+    const _u = localStorage.getItem('greenmarket_user');
+    const signBtn = document.getElementById('signInBtn');
+    const dashBtn = document.getElementById('dashBtn');
+    if(_u){
+      const user = JSON.parse(_u);
+      if(dashBtn){ dashBtn.style.display='inline-flex'; }
+      if(signBtn){ signBtn.style.display='none'; }
+    }
+  })();
+</script>
+</body>
+</html>
