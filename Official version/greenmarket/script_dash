@@ -1,0 +1,10 @@
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("JavaScript du Dashboard Producteur chargé !");
+    const deleteButtons = document.querySelectorAll(".btn-delete");
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const approbation = confirm("Êtes-vous certain de vouloir supprimer définitivement ce produit de votre catalogue ?");
+            if (!approbation) e.preventDefault();
+        });
+    });
+});

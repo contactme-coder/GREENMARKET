@@ -1,0 +1,27 @@
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Système multi-passerelle GreenMarket initialisé.");
+    const cards = document.querySelectorAll(".method-card");
+    const panels = document.querySelectorAll(".payment-details");
+    function switchPaymentPanel(targetId, activeCard) {
+        cards.forEach(c => c.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
+        if(activeCard) { activeCard.classList.add("active"); const radio = activeCard.querySelector("input[type='radio']"); if(radio) radio.checked = true; }
+        const targetPanel = document.getElementById(targetId);
+        if(targetPanel) targetPanel.classList.add("active");
+    }
+    cards.forEach(card => {
+        card.addEventListener("click", () => { const targetId = card.getAttribute("data-target"); switchPaymentPanel(targetId, card); });
+    });
+    const checkedRadio = document.querySelector("input[name='methode_paiement']:checked");
+    if(checkedRadio) { const associatedCard = checkedRadio.closest(".method-card"); const targetId = associatedCard.getAttribute("data-target"); switchPaymentPanel(targetId, associatedCard); }
+    else { const defaultCard = cards[0]; if(defaultCard) { const targetId = defaultCard.getAttribute("data-target"); switchPaymentPanel(targetId, defaultCard); } }
+    const cardInput = document.querySelector("input[name='card_number']");
+    if(cardInput) {
+        cardInput.addEventListener("input", (e) => {
+            let v = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let matches = v.match(/\d{4,16}/g); let match = matches && matches[0] || ''; let parts = [];
+            for (let i=0, len=match.length; i<len; i+=4) parts.push(match.substring(i, i+4));
+            e.target.value = parts.length > 0 ? parts.join(' ') : v;
+        });
+    }
+});
