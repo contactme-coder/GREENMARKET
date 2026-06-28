@@ -9,7 +9,7 @@ vous trouverez les fichiers (La version officiel du projet dans un dossier) et l
 # Remarques:
 ----Le MCD et le MLD sont en extension .loo qui nécessite le logiciel Looping (open source et telechargrable via le lien : https://www.looping-mcd.fr/)
 ----Pour UI/UX, le lien direct vers figma est mis dans un fichier texte
-----Vous pouvez integrire le dossier des fichiers HTML-CSS-JS pour voir le site comme initialement introduit en coté client
+----Vous pouvez integrire le dossier des fichiers HTML-CSS-JS en Vs (un IDE) Code pour voir le site comme initialement introduit en coté client
 ----Vous pouvez mettre le dossier GreenMarket MainApp de la version finale officielle existante en dossier Official version----LE PROJET OFFICIEL -VERSION FINALE, dans le dossier htdocs an dossier XAMPP pour que le projet fonctionne au niveau de votre machine.
 
 
