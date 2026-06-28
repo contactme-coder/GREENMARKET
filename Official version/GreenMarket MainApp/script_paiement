@@ -1,0 +1,17 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".method-card");
+    const panels = document.querySelectorAll(".payment-details");
+    function switchPaymentPanel(targetId, activeCard) {
+        cards.forEach(c => c.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
+        if(activeCard) { activeCard.classList.add("active"); const radio = activeCard.querySelector("input[type='radio']"); if(radio) radio.checked = true; }
+        const targetPanel = document.getElementById(targetId);
+        if(targetPanel) targetPanel.classList.add("active");
+    }
+    cards.forEach(card => {
+        card.addEventListener("click", () => { const targetId = card.getAttribute("data-target"); switchPaymentPanel(targetId, card); });
+    });
+    const checkedRadio = document.querySelector("input[name='methode_paiement']:checked");
+    if(checkedRadio) { const associatedCard = checkedRadio.closest(".method-card"); switchPaymentPanel(associatedCard.getAttribute("data-target"), associatedCard); }
+    else { const defaultCard = cards[0]; if(defaultCard) switchPaymentPanel(defaultCard.getAttribute("data-target"), defaultCard); }
+});

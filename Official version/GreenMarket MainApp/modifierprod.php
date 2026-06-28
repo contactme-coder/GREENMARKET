@@ -1,0 +1,18 @@
+<?php session_start(); if(!isset($_SESSION)||empty($_SESSION)||$_SESSION['roleu']!=='producteur'){ header("Location: authentification.php"); exit; } include("preferences.php"); include("prodconnex.php"); $err=[]; 
+if(isset($_GET['refp'])){ try{ $rs=$c->prepare("SELECT * FROM produit WHERE reference = ? AND id_producteur = ?"); $rs->execute([$_GET['refp'], $_SESSION['idu']]); $tprod=$rs->fetch(PDO::FETCH_ASSOC); if(!$tprod){ header("Location: dashboardpro.php"); exit; } } catch(PDOException $e){die("Erreur:".$e->getMessage());} }
+if($_SERVER['REQUEST_METHOD']=="POST"){ extract($_POST); if(!isset($lib)||empty(trim($lib))) $err['lib']='Veuillez entrer le libellé'; if(!isset($prx)||empty($prx)) $err['prx']='Veuillez entrer un prix'; elseif($prx<=0) $err['prx']="Le prix ne doit pas être négatif ou nul"; if(!isset($qte)||empty($qte)) $err['qte']='Veuillez entrer une quantité'; elseif($qte<0) $err['qte']="La quantité ne doit pas être négative";
+    if(empty($err)){ try{ $ri=$c->prepare("UPDATE produit SET libelle = ?, description = ?, prixu = ?, quantite = ?, idcateg = ?, statut = 'en_attente' WHERE reference = ? AND id_producteur = ?"); $r=$ri->execute([trim($lib), $desc, $prx, $qte, $cat, $ref_hide, $_SESSION['idu']]); if($r==false){ header("Location: dashboardpro.php?msgerr=Echec de la modification"); exit; } else { header("Location: dashboardpro.php?msgs=Produit modifié, en attente de re-validation"); exit; } } catch(PDOException $e){die ("Erreur : ".$e->getMessage());} }
+}
+include("header.php");
+?>
+<style>.form-container{max-width:500px; margin:100px auto 40px; padding:20px;} fieldset{background:var(--white); border:none; border-radius:12px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); border:1px solid var(--cream2);} legend{font-size:1.5rem; font-weight:bold; color:var(--olive);} input, select, textarea{width:100%; padding:8px; border:1px solid var(--cream2); border-radius:6px; margin-bottom:10px;} .btn{background:var(--olive); color:white; padding:10px 20px; border:none; border-radius:6px; cursor:pointer;} .err{color:#c95a5a;}</style>
+<div class="form-container"><fieldset><legend>Modifier le produit</legend>
+<form method="POST"><input type="hidden" name="ref_hide" value="<?= htmlspecialchars($tprod['reference']) ?>"><p>Référence : <strong><?= htmlspecialchars($tprod['reference']) ?></strong> (Non modifiable)</p>
+<?php if(isset($err['lib'])) echo"<div class='err'>".$err['lib']."</div>";?>Libellé : <input type="text" name="lib" value="<?= htmlspecialchars($tprod['libelle']) ?>">
+Description : <textarea name="desc"><?= htmlspecialchars($tprod['description']) ?></textarea>
+<?php if(isset($err['prx'])) echo"<div class='err'>".$err['prx']."</div>";?>Prix unitaire :<input type="number" step="0.01" name="prx" value="<?= htmlspecialchars($tprod['prixu']) ?>">
+<?php if(isset($err['qte'])) echo"<div class='err'>".$err['qte']."</div>";?>Quantité : <input type="number" name="qte" value="<?= htmlspecialchars($tprod['quantite']) ?>">
+Catégorie : <select name="cat"><?php $rs=$c->query("SELECT idcat, libelle FROM categorie"); while($cat=$rs->fetch(PDO::FETCH_ASSOC)){ $s=($cat['idcat']==$tprod['idcateg'])?"selected":""; echo "<option value='".$cat['idcat']."' $s>".$cat['libelle']."</option>"; } ?></select>
+<button type="submit" class="btn">Enregistrer</button> <a href="dashboardpro.php" style="color:#c95a5a; text-decoration:none;">Annuler</a>
+</form></fieldset></div>
+<?php include("footer.php"); ?>

@@ -1,0 +1,9 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteButtons = document.querySelectorAll(".btn-delete");
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const approbation = confirm("Êtes-vous certain de vouloir supprimer définitivement ce produit ?");
+            if (!approbation) e.preventDefault();
+        });
+    });
+});
