@@ -2,7 +2,7 @@
 
 
 #Bonjour!
-Vous etes en GREENMARKET!, un projet dont lequel on fait exploiter un nombre important de baguage concernant HTML, CSS , JAVASCRIPT et le PHP
+Vous etes en GREENMARKET!, un projet dans lequel on fait exploiter un nombre important de baguage concernant HTML, CSS , JAVASCRIPT et le PHP
 
 vous trouverez les fichiers (La version officiel du projet dans un dossier) et les fichiers qui ont guider à ce résultat (MCD-MCD-UI-UX-HTML-CSS-JS) dans queques dossiers séparés, qui sont tous delivrés lors de la formation avec un rapport et une présentation (le document "docs") en plus de quelques version beta (version de tests)
 
